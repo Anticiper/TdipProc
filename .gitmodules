@@ -1,0 +1,3 @@
+[submodule "Common"]
+	path = Common
+	url = https://gitee.com/yao-hongchun/gsem_-common.git
