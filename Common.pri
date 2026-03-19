@@ -29,6 +29,7 @@ INCLUDEPATH += $$PWD/Common/cutils/libevent/include
 INCLUDEPATH += $$PWD/Common/ctrl/sip
 INCLUDEPATH += $$PWD/Common/deal/geo
 INCLUDEPATH += $$PWD/Common/deal/sip
+INCLUDEPATH += $$PWD/Common/deal/tdip
 INCLUDEPATH += $$PWD/Common/deal/csamt
 INCLUDEPATH += $$PWD/Common/format
 INCLUDEPATH += $$PWD/Common/pub/sip
@@ -123,6 +124,7 @@ HEADERS += \
     $$PWD/Common/deal/sip/result_sip.h \
     $$PWD/Common/deal/sip/sip_spect2res.h \
     $$PWD/Common/deal/sip/sip_ts2spect.h \
+    $$PWD/Common/deal/tdip/tdip_ts2spect.h \
     $$PWD/Common/deal/geo/data_limit.h \
 #    $$PWD/Common/deal/csamt/csamt_res.h \
     $$PWD/Common/format/format.h \
@@ -229,6 +231,7 @@ SOURCES += \
     $$PWD/Common/deal/sip/result_sip.cpp \
     $$PWD/Common/deal/sip/sip_spect2res.cpp \
     $$PWD/Common/deal/sip/sip_ts2spect.cpp \
+    $$PWD/Common/deal/tdip/tdip_ts2spect.cpp \
     $$PWD/Common/deal/geo/data_limit.c \
 #    $$PWD/Common/deal/csamt/csamt_res.cpp \
     $$PWD/Common/format/format.cpp \

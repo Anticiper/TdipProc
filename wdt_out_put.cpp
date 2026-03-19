@@ -149,8 +149,8 @@ void CWdtOutPut::InitLimitData()
     DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APP].max, 1E6);
     DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APP].max_err_cp, 1);
     DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APPC].min, 0);
-    DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APPC].max, 0.5);
-    DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APPC].max_err_cp, 0.5);
+    DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APPC].max, 1000);
+    DataLimitSetItem(&m_vt_limit[LIMIT_TYPE_APPC].max_err_cp, 1000);
     SharedData::instance()->SetLimitInfo(&m_vt_limit);
 }
 

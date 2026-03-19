@@ -50,6 +50,8 @@ private:
     bool UpdateParamToOtherTrs(CFormatTRS *target_trs);
     //装置系数计算
     float TdipPubCalK(int idx_dev_ch,TdipPrmMeas_S *prm_meas,TdipPrmDev_S *prm_dev, CResult::ChInfo_S ch_info);
+    int  IndexOfSigInfo(FreqType_N freq_type, int harm_num);
+    int GetIdxOf(const QVector<float> VtArray, float Value); //返回Value在数组中的索引
 private slots:
     void onBtnSaveChange();
     void onBtnSaveResToTxt();

@@ -521,15 +521,15 @@ void CTdipDataOut::PrintRes2dHead(int idx_file, CFormatTRS *res)
     fprintf(file, "%-20d\n", 0);  //数据点数(预留20个字符的位置)
     fprintf(file, "1\n");//测量位置类型，0表示第一个电极(最小值)，1表示C1-P2中点
     fprintf(file, "%d\n", 1);//是否有激电数据：1-有，0-无
-    //频散率数据头
-    fprintf(file, "Percent Frequency Effect\n");
-    fprintf(file, "0.01 FE\n");
-    fprintf(file, "%g,%g\n",res->GetPrmMeas()->sig_freq,
-            res->GetPrmMeas()->sig_freq);
+    //电压数据头
+    fprintf(file, "Chargeability\n");
+    fprintf(file, "mV/V\n");
+    fprintf(file, "%g,%g\n",res->GetPrmMeas()->t2,
+            res->GetPrmMeas()->l2);
 
     LimitItem_S appItem = m_vt_limit->at(LIMIT_TYPE_APP);
     LimitItem_S appcItem = m_vt_limit->at(LIMIT_TYPE_APPC);
-    fprintf(file, "Error estimate for data present(Limit: AppErr=%.2f%, AppcErr=%.2f, App=%.2f~%.2f, Appc=%.2f~%.2f)\n",
+    fprintf(file, "Error estimate for data present(Limit: AppErr=%.2f%, MErr=%.2f, App=%.2f~%.2f, M=%.2f~%.2f)\n",
             appItem.max_err_cp.value,
             appcItem.max_err_cp.value,
             appItem.min.value,appItem.max.value,
@@ -661,16 +661,16 @@ void CTdipDataOut::PrintRes3dHead(int idx_file, CFormatTRS *res)
     fprintf(file, "%-20d\n", 0);  //数据点数(预留20个字符的位置)
     fprintf(file, "1\n");//测量位置类型，0表示第一个电极(最小值)，1表示C1-P2中点
     fprintf(file, "1\n");//是否有激电数据：1-有，0-无
-    //频散率数据头
-    fprintf(file, "Percent Frequency Effect\n");
-    fprintf(file, "0.01 FE\n");
-    fprintf(file, "%g,%g\n",res->GetPrmMeas()->sig_freq,
-            res->GetPrmMeas()->sig_freq);
+    //电压数据头
+    fprintf(file, "Chargeability\n");
+    fprintf(file, "mV/V\n");
+    fprintf(file, "%g,%g\n",res->GetPrmMeas()->t2,
+            res->GetPrmMeas()->l2);
 
     LimitItem_S appItem = m_vt_limit->at(LIMIT_TYPE_APP);
     LimitItem_S appcItem = m_vt_limit->at(LIMIT_TYPE_APPC);
 
-    fprintf(file, "Error estimate for data present(Limit: AppErr=%.2f%, AppcErr=%.2fmard, App=%.2f~%.2f, Appc=%.2f~%.2f)\n",
+    fprintf(file, "Error estimate for data present(Limit: AppErr=%.2f%, MErr=%.2fmard, App=%.2f~%.2f, M=%.2f~%.2f)\n",
             appItem.max_err_cp.value,
             appcItem.max_err_cp.value,
             appItem.min.value,appItem.max.value,

@@ -35,6 +35,7 @@ CWdtParamTrs::CWdtParamTrs(QWidget *parent) :
     ui->cmbSipLayout->addItem(tr("三极装置"));
     ui->cmbSipLayout->addItem(tr("四极装置"));
 
+    m_cmb_sig_info.append(new SigTypeInfo_S{tr("方波"),FREQ_TYPE_SQUARE,0});
     m_cmb_sig_info.append(new SigTypeInfo_S{tr("过零方波-25%占空"),FREQ_TYPE_LINE,1});
     m_cmb_sig_info.append(new SigTypeInfo_S{tr("过零方波-50%占空"),FREQ_TYPE_LINE,2});
     m_cmb_sig_info.append(new SigTypeInfo_S{tr("过零方波-75%占空"),FREQ_TYPE_LINE,3});
@@ -182,13 +183,21 @@ void CWdtParamTrs::UpdateData(bool bSaveOrShow)
         sprintf(prm_meas->project_name, "%s", ui->edtProjName->text().toStdString().data());
         prm_meas->line_no = ui->edtLineNo->text().toInt();
         prm_meas->Ax = ui->edtPosAx->text().toFloat();
-        prm_meas->Ay = ui->edtPosAy->text().toFloat();
         prm_meas->Bx = ui->edtPosBx->text().toFloat();
-        prm_meas->By = ui->edtPosBy->text().toFloat();
+        if(prm_meas->layout_type == SIP_MID_GRADIENT){
+            prm_meas->Ay = ui->edtDistLine2AB->text().toFloat();
+            prm_meas->By = prm_meas->Ay;
+        }else if(prm_meas->layout_type == SIP_MID_GRADIENT){
+            prm_meas->Ay = ui->edtDistLine2AB->text().toFloat();
+            prm_meas->By = prm_meas->Ay;
+        }else{
+            prm_meas->Ay = 0;
+            prm_meas->By = ui->edtPosBy->text().toFloat();
+        }
         prm_meas->layout_type = (SipLayout_T)ui->cmbSipLayout->currentIndex();
         prm_meas->freq_type = m_cmb_sig_info.at(ui->cmbSigType->currentIndex())->freq_type;
         prm_meas->sig_freq = m_vt_sig_freq[ui->cmbSigBaseFreq->currentIndex()];
-//**        prm_meas->cycles_once_cal = GetCyclesOnceCal(prm_meas->sig_freq);
+        prm_meas->cycles_once_cal = ui->edtCycle->text().toInt();
         prm_meas->harm_num = m_cmb_sig_info.at(ui->cmbSigType->currentIndex())->harm_num;
 //**        prm_meas->start_time = m_geo_meas->GetMaxGpsTime()+30; //**60;
         sprintf(prm_meas->file_name, "%s", ui->edtFileName->text().toStdString().data());
@@ -198,15 +207,16 @@ void CWdtParamTrs::UpdateData(bool bSaveOrShow)
         sprintf(prm_meas->curr_station_name,"%s", ui->cmbCurrStationName->currentText().toStdString().data());
         prm_meas->curr_resist = m_vt_curr_resist.at(ui->cmbCurrResist->currentIndex());
         prm_meas->curr_value = ui->edtCurrValue->text().toFloat();
+        float halfCycle = (1.0/prm_meas->sig_freq)/2.0;
         prm_meas->t0 = ui->edtT0->text().toFloat();
         prm_meas->t1 = ui->edtT1->text().toFloat();
         prm_meas->t2 = ui->edtT2->text().toFloat();
-        prm_meas->t3 = ui->edtT3->text().toFloat();
-        prm_meas->t4 = ui->edtT4->text().toFloat();
+        prm_meas->t3 = prm_meas->t1 + halfCycle;
+        prm_meas->t4 = prm_meas->t2 + halfCycle;
         prm_meas->l1 = ui->edtL1->text().toFloat();
         prm_meas->l2 = ui->edtL2->text().toFloat();
-        prm_meas->l3 = ui->edtL3->text().toFloat();
-        prm_meas->l4 = ui->edtL4->text().toFloat();
+        prm_meas->l3 = prm_meas->l1;
+        prm_meas->l4 = prm_meas->l2;
         //log_info("=====>Mx=%f Nx=%f",m_vt_prm_dev.at(0)->pos_m_x[1], m_vt_prm_dev.at(0)->pos_n_x[1]);
     }else{
         ui->edtMN->blockSignals(true);
@@ -221,10 +231,9 @@ void CWdtParamTrs::UpdateData(bool bSaveOrShow)
             ui->edtPosBx->setText(tr("%1").arg(prm_meas->Bx));
             ui->edtPosBy->setText(tr("%1").arg(prm_meas->By));
             ui->cmbSipLayout->setCurrentIndex(prm_meas->layout_type);
-            ui->cmbSigType->setCurrentIndex(prm_meas->harm_num-1);
-            index = algo_index_of(prm_meas->sig_freq, m_vt_sig_freq.data(), m_vt_sig_freq.size(), 1E-5);
-            ui->cmbSigBaseFreq->setCurrentIndex(index);
-    //        ui->cmbSigBaseFreq->setCurrentText(tr("%1").arg(prm_meas->sig_freq));
+            index = IndexOfSigInfo(prm_meas->freq_type, prm_meas->harm_num);
+            ui->cmbSigType->setCurrentIndex(index);
+            ui->cmbSigBaseFreq->setCurrentIndex(GetIdxOf(m_vt_sig_freq, prm_meas->sig_freq));
             ui->edtFileName->setText(tr("%1").arg(prm_meas->file_name));
 
             ui->rdCurrStationName->setChecked(prm_meas->curr_station_used);
@@ -246,16 +255,13 @@ void CWdtParamTrs::UpdateData(bool bSaveOrShow)
         ui->edtMN->blockSignals(false);
         ui->edtPosFirstPole->blockSignals(false);
         ui->edtDistLine2AB->blockSignals(false);
+        onCmbFreqChanged();
+        ui->edtCycle->setText(tr("%1").arg(prm_meas->cycles_once_cal));
         ui->edtT0->setText(tr("%1").arg(prm_meas->t0));
         ui->edtT1->setText(tr("%1").arg(prm_meas->t1));
         ui->edtT2->setText(tr("%1").arg(prm_meas->t2));
-        ui->edtT3->setText(tr("%1").arg(prm_meas->t3));
-        ui->edtT4->setText(tr("%1").arg(prm_meas->t4));
         ui->edtL1->setText(tr("%1").arg(prm_meas->l1));
         ui->edtL2->setText(tr("%1").arg(prm_meas->l2));
-        ui->edtL3->setText(tr("%1").arg(prm_meas->l3));
-        ui->edtL4->setText(tr("%1").arg(prm_meas->l4));
-        onCmbFreqChanged();
         UpdateDevLayoutShow(index, prm_meas->first_pole_x, prm_meas->mn_len);
         UpdateCurrUiState();
     }
@@ -297,23 +303,16 @@ void CWdtParamTrs::UpdateDataUninited()
 //    m_model_dev_lay->SetMnLen(20);
 //    m_model_dev_lay->SetFirstPoleX(0);
     //    m_model_dev_lay->SetCurrDevIdx(-1);
+    ui->edtCycle->setText(tr(""));
     ui->edtT0->setText(tr(""));
     ui->edtT1->setText(tr(""));
     ui->edtT2->setText(tr(""));
-    ui->edtT3->setText(tr(""));
-    ui->edtT4->setText(tr(""));
     ui->edtL1->setText(tr(""));
     ui->edtL2->setText(tr(""));
-    ui->edtL3->setText(tr(""));
-    ui->edtL4->setText(tr(""));
     ui->label_t1->setText(tr(""));
     ui->label_t2->setText(tr(""));
-    ui->label_t3->setText(tr(""));
-    ui->label_t4->setText(tr(""));
     ui->label_l1->setText(tr(""));
     ui->label_l2->setText(tr(""));
-    ui->label_l3->setText(tr(""));
-    ui->label_l4->setText(tr(""));
 }
 
 void CWdtParamTrs::UpdateDevLayoutShow(int idx_dev_curr, float first_pole_x, float mn_len)
@@ -883,11 +882,11 @@ float CWdtParamTrs::TdipPubCalK(int idx_dev_ch,TdipPrmMeas_S *prm_meas,TdipPrmDe
     }
     log_info("=====>idx_dev_ch=%d Ax=%.4f Ay=%.4f Bx=%.4f By=%.4f Mx=%f My=%f Nx=%f Ny=%f",
              idx_dev_ch,Ax,Ay,Bx,By,Mx,My,Nx,Ny);
-    if(prm_meas->layout_type == SIP_POLE3_SOUNDING){
-        k = algo_cal_k_factor_pole3(Ax, Ay, Mx, My, Nx, Ny);
-    }else{
+//    if(prm_meas->layout_type == SIP_POLE3_SOUNDING){
+//        k = algo_cal_k_factor_pole3(Ax, Ay, Mx, My, Nx, Ny);
+//    }else{
         k = algo_cal_k_factor(Ax, Ay, Bx, By, Mx, My, Nx, Ny);
-    }
+//    }
     return k;
 }
 
@@ -897,97 +896,48 @@ void CWdtParamTrs::UpdateTimeLabel(int sampleRate, double freq, int freqType)
     double t0=0;
     double max_t1=0;
     double max_t2=0;
-    double max_t3=0;
-    double max_t4=0;
     QString max_l1;//L1与L3最大长度
     QString max_l2;//L2与L4最大长度
-    double time_one_cycle = 1.0/sampleRate;
+    double time_one_cycle = 1.0/freq;
 
-    if(freq == 1.0/256){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/128){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/64){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/32){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/16){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/8){
-        t0 = (double)(((once_row - 23)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/4){
-        t0 = (double)(((once_row - 8)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0/2){
-        t0 = (double)((174*1000)/sampleRate)/once_row;
-    }
-    if(freq == 1.0){
-        t0 = (double)(((once_row - 14)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 2){
-        t0 = (double)(((once_row - 14)*1000)/sampleRate)/once_row;
-    };
-    if(freq == 4){
-        t0 = (double)(((once_row - 6)*1000)/sampleRate)/once_row;
-    }
-    if(freq == 8){
-        t0 = 0.036;
-    }
-    if(freq == 16){
-        t0 = 0.072;
-    }
-    if(freq == 32){
-        t0 = 0.15;
-    }
-    if(freq == 64){
-        t0 = 0.302;
-    }
     switch (freqType) {
-    case 0://25%占空
-        max_t1 = 0.125*time_one_cycle*1000;
-        max_t2 = 0.5*time_one_cycle*1000;
-        max_t3 = 0.625*time_one_cycle*1000;
-        max_t4 = time_one_cycle*1000;
-        max_l1 = FormatValue(max_t1);
-        max_l2 = FormatValue(3*max_t1);
-        break;
-    case 1://50%占空
-        max_t1 = 0.25*time_one_cycle*1000;//1/4周期
-        max_t2 = 0.5*time_one_cycle*1000;//1/2周期
-        max_t3 = 0.75*time_one_cycle*1000;//3/4周期
-        max_t4 = time_one_cycle*1000;//一个周期
+    case 0://方波
+        max_t1 = 0.5*time_one_cycle;
+        max_t2 = max_t1;
         max_l1 = FormatValue(max_t1);
         max_l2 = max_l1;
         break;
-    case 2://75%占空
-        max_t1 = 0.375*time_one_cycle*1000;//1/4周期
-        max_t2 = 0.5*time_one_cycle*1000;//1/2周期
-        max_t3 = 0.875*time_one_cycle*1000;//3/4周期
-        max_t4 = time_one_cycle*1000;//一个周期
+    case 1://25%占空
+        max_t1 = 0.125*time_one_cycle;
+        max_t2 = 0.5*time_one_cycle;
+        max_l1 = FormatValue(max_t1);
+        max_l2 = FormatValue(3*max_t1);
+        break;
+    case 2://50%占空
+        max_t1 = 0.25*time_one_cycle;//1/4周期
+        max_t2 = 0.5*time_one_cycle;//1/2周期
+        max_l1 = FormatValue(max_t1);
+        max_l2 = max_l1;
+        break;
+    case 3://75%占空
+        max_t1 = 0.375*time_one_cycle;//1/4周期
+        max_t2 = 0.5*time_one_cycle;//1/2周期
         max_l1 = FormatValue(max_t1);
         max_l2 = FormatValue(max_t1/3);;
         break;
     }
     QString t1 = FormatValue(max_t1);
     QString t2 = FormatValue(max_t2);
-    QString t3 = FormatValue(max_t3);
-    QString t4 = FormatValue(max_t4);
 
     ui->edtT0->setText(FormatValue(t0));
     ui->label_t1->setText(tr("(0,%1)").arg(t1));
-    ui->label_t2->setText(tr("(%1,%2)").arg(t1).arg(t2));
-    ui->label_t3->setText(tr("(%1,%2)").arg(t2).arg(t3));
-    ui->label_t4->setText(tr("(%1,%2)").arg(t3).arg(t4));
+    if(freqType == 0){
+        ui->label_t2->setText(tr("(0,%1)").arg(t2));
+    }else{
+        ui->label_t2->setText(tr("(%1,%2)").arg(t1).arg(t2));
+    }
     ui->label_l1->setText(tr("长度设置区间为(0,%1)").arg(max_l1));
     ui->label_l2->setText(tr("长度设置区间为(0,%1)").arg(max_l2));
-    ui->label_l3->setText(tr("长度设置区间为(0,%1)").arg(max_l1));
-    ui->label_l4->setText(tr("长度设置区间为(0,%1)").arg(max_l2));
 }
 
 QString CWdtParamTrs::FormatValue(double value)
@@ -1000,4 +950,29 @@ QString CWdtParamTrs::FormatValue(double value)
     if(index <= 0)
         return format;
     return format.mid(0, index+3);
+}
+
+int CWdtParamTrs::GetIdxOf(const QVector<float> VtArray, float Value)
+{
+    int idx_ret = 0;
+    for(int i=0; i<VtArray.size(); i++){
+        if(fabs(Value-VtArray[i]) < 1E-6){
+            idx_ret = i;
+            break;
+        }
+    }
+    return idx_ret;
+}
+
+int CWdtParamTrs::IndexOfSigInfo(FreqType_N freq_type, int harm_num)
+{
+    int idx = 0;
+    for(int i=0; i<m_cmb_sig_info.size(); i++){
+        if(m_cmb_sig_info.at(i)->freq_type == freq_type
+                && m_cmb_sig_info.at(i)->harm_num == harm_num){
+            idx = i;
+            break;
+        }
+    }
+    return idx;
 }

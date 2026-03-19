@@ -35,12 +35,13 @@ void CWdtTdipResTable::Init(CDataThreshold *threshold)
     m_model_res = new ModelTdipRes(this);
     m_model_res->SetColItemsDisplay(m_model_res->GetShowColItems());
     ui->tbRes->setModel(m_model_res);
-    ui->tbRes->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    //ui->tbRes->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     m_model_res->SetThreshold(threshold);
 }
 
 void CWdtTdipResTable::onUpdateShowResult()
 {
     emit m_model_res->layoutChanged();
+    ui->tbRes->resizeColumnsToContents();
     //ui->lbCurrent->setText(tr("").sprintf("%.4f", m_geo_meas->GetCurrentValue()));
 }

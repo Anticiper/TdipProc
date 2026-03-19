@@ -223,7 +223,7 @@ bool CWdtTsPlot::ReadSmtAndUpdateShow()
         UpdateStInfo();
         UpdatePrmAndPlot(TYPE_CURR);
     }else{
-        ui->lbTsInfo->setText(tr("SMT文件读取失败！"));
+        ui->lbTsInfo->setText(tr("TMT文件读取失败！"));
         for(int i=0; i<m_VtWdtCh.size(); i++){
             m_VtWdtCh.at(i)->GetPlot()->Clear();
         }

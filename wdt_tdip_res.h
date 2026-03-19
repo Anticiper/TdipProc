@@ -6,7 +6,10 @@
 #include "wdt_tdip_res_table.h"
 #include "dlg_limit_settings.h"
 #include "format_trs.h"
+#include "format_tmt.h"
 #include "data_threshold.h"
+#include "tdip_result.h"
+#include "tdip_result_cal.h"
 
 namespace Ui {
 class CWdtTdipRes;
@@ -28,9 +31,17 @@ private:
     void InitUiShowPlotPos();
     void UpdatePassRate(); //更新统计的合格率
     void onUpdateShowResult();
+    void UpdateRecalUi(bool isInit);
+    int GetLenForOneCycle();
+    std::string GetTmtFileName(std::string file_trs,
+                                           std::string dev_name);
     static void ReadCfgThreshold(CDataThreshold *threshold);
     static void WriteCfgThreshold(CDataThreshold *threshold);
-
+    bool RecalTsToTrs(CFormatTRS *trs,
+                      QStringList &list_dev_recal,
+                      QStringList &list_dev_unrecal);
+    void UpdateTimeLabel(int sampleRate, double freq, int freqType);
+    QString FormatValue(double value);
 protected slots:
     virtual void showEvent(QShowEvent * event);
     void onSaveResToFile();
@@ -40,6 +51,12 @@ private slots:
     void on_btnErrSet_clicked();
 
     void on_btnSave_clicked();
+
+    void on_btnTmtDir_clicked();
+
+    void on_btnTrsRecal_clicked();
+
+    void on_btnTrsOutTxt_clicked();
 
 private:
     Ui::CWdtTdipRes *ui;

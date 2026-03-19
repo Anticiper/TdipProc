@@ -68,7 +68,7 @@
           <item>
            <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>视极化率最大误差(%)</string>
+             <string>M误差(mV/V)</string>
             </property>
            </widget>
           </item>
@@ -81,7 +81,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>0.5</string>
+             <string>1000</string>
             </property>
            </widget>
           </item>
@@ -668,11 +668,7 @@
     </spacer>
    </item>
   </layout>
-  <zorder>groupBox</zorder>
-  <zorder>groupBox</zorder>
   <zorder>verticalSpacer</zorder>
-  <zorder>layoutWidget</zorder>
-  <zorder>layoutWidget_2</zorder>
   <zorder>grpOutPrmTdip</zorder>
   <zorder>label_13</zorder>
  </widget>

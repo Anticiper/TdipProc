@@ -124,7 +124,7 @@ QVariant CModelRangeLimit::headerData(int section, Qt::Orientation orientation, 
                 Var = tr("视电阻率(Ω·m)");
                 break;
             case LIMIT_TYPE_APPC:
-                Var = tr("视极化率(ηs)");
+                Var = tr("M(mV/V)");
                 break;
             default:
                 break;

@@ -25,8 +25,8 @@ public:
         COL_TYPE_VOLT_NEGATIVE_ERR,
         COL_TYPE_APPR,//视电阻率
         COL_TYPE_APPR_ERR,//视电阻率误差
-        COL_TYPE_APPC,//视极化率
-        COL_TYPE_APPC_ERR,//视极化率误差
+        COL_TYPE_APPC,//充电率（mV/V）
+        COL_TYPE_APPC_ERR,//充电率（mV/V）误差
         COL_TYPE_CNT,
     }TdipColType_T;
 

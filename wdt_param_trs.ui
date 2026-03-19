@@ -19,7 +19,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
         <widget class="QGroupBox" name="groupBox">
@@ -257,10 +257,27 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbLayoutAx_2">
               <property name="text">
-               <string>T0-周期起始时间(ms):</string>
+               <string>周期起始时间(s):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QLabel" name="lbLayoutAx_3">
+              <property name="text">
+               <string>叠加周期数:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLineEdit" name="edtCycle">
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
               </property>
              </widget>
             </item>
@@ -271,7 +288,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbLayoutAy_2">
               <property name="text">
-               <string>T1-正向一次场积分起始时间(ms):</string>
+               <string>一次场积分起始时间(s):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -306,7 +323,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbLayoutAy_4">
               <property name="text">
-               <string>T2-正向二次场积分起始时间(ms):</string>
+               <string>二次场积分起始时间(s):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -323,67 +340,11 @@
            </layout>
           </item>
           <item>
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="edtT3">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbLayoutAy_5">
-              <property name="text">
-               <string>T3-反向一次场积分起始时间(ms):</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_t3">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QGridLayout" name="gridLayout_11">
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="edtT4">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbLayoutAy_6">
-              <property name="text">
-               <string>T4-反向二次场积分起始时间(ms):</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_t4">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
            <layout class="QGridLayout" name="gridLayout_12">
             <item row="0" column="0">
              <widget class="QLabel" name="lbLayoutAy_7">
               <property name="text">
-               <string>L1-正向一次场积分长度(ms):</string>
+               <string>一次场积分长度(s):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -418,7 +379,7 @@
             <item row="0" column="0">
              <widget class="QLabel" name="lbLayoutAy_12">
               <property name="text">
-               <string>L2-正向二次场积分长度(ms):</string>
+               <string>二次场积分长度(s):</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -427,62 +388,6 @@
             </item>
             <item row="0" column="2">
              <widget class="QLabel" name="label_l2">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QGridLayout" name="gridLayout_13">
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbLayoutAy_9">
-              <property name="text">
-               <string>L3-反向一次场积分长度(ms):</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="edtL3">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_l3">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <layout class="QGridLayout" name="gridLayout_15">
-            <item row="0" column="0">
-             <widget class="QLabel" name="lbLayoutAy_13">
-              <property name="text">
-               <string>L4-反向二次场积分长度(ms):</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="edtL4">
-              <property name="alignment">
-               <set>Qt::AlignCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QLabel" name="label_l4">
               <property name="text">
                <string/>
               </property>
@@ -755,9 +660,6 @@
     </layout>
    </item>
   </layout>
-  <zorder>splitter</zorder>
-  <zorder>groupBox_6</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <resources/>
  <connections/>

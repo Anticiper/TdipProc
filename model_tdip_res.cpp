@@ -267,10 +267,10 @@ QVariant ModelTdipRes::headerData(int section, Qt::Orientation orientation, int 
                 Var = tr("视电阻率误差(%)");
                 break;
             case COL_TYPE_APPC:
-                Var = tr("视极化率(%)");
+                Var = tr("M(mV/V)");
                 break;
             case COL_TYPE_APPC_ERR:
-                Var = tr("视极化率误差(%)");
+                Var = tr("M误差(mV/V)");
                 break;
             default:
                 break;
