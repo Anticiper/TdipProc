@@ -367,7 +367,7 @@
                      <bool>true</bool>
                     </property>
                     <property name="text">
-                     <string>视极化率</string>
+                     <string>M</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -569,7 +569,7 @@
                 <item>
                  <widget class="QLabel" name="lbSystemErrCp_2">
                   <property name="text">
-                   <string>  视极化率(%)</string>
+                   <string>  M(mV/V)</string>
                   </property>
                  </widget>
                 </item>

@@ -163,7 +163,7 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="lbLayoutAy_3">
                  <property name="text">
-                  <string>一次场积分起始时间(s):</string>
+                  <string>一次场计算起始时间(s):</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -215,7 +215,7 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="lbLayoutAy_8">
                  <property name="text">
-                  <string>一次场积分长度(s):</string>
+                  <string>一次场计算长度(s):</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

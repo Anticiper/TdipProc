@@ -172,7 +172,7 @@ QVariant ModelTdipRes::data(const QModelIndex &index, int role) const
             break;
         case COL_TYPE_APPR:
             if(cal_num > 0)
-                ret = tr("").sprintf("%.3f", res_item.appr_value);
+                ret = tr("").sprintf("%.3E", res_item.appr_value);
             break;
         case COL_TYPE_APPR_ERR:
             if(cal_num > 1)
